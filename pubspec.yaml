@@ -1,0 +1,78 @@
+name: almugahed_cars
+description: "تطبيق ALMUGAHED CARS لإدارة عقود تأجير السيارات"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # --- إدارة الحالة ---
+  # Riverpod: اختياره لأنه يوفر إدارة حالة قوية، آمنة النوع (type-safe)،
+  # لا يعتمد على BuildContext، ويسهل الاختبار والفصل بين الطبقات (Clean Architecture)
+  flutter_riverpod: ^2.5.1
+
+  # --- قاعدة البيانات المحلية ---
+  # Hive: تم اختياره بدلاً من SQLite/Isar لأنه:
+  # 1. سريع جدًا (NoSQL Key-Value مبني بالكامل بـ Dart، لا يحتاج قنوات Native).
+  # 2. لا يحتاج build_runner إجباريًا (تم كتابة TypeAdapter يدويًا في هذا المشروع).
+  # 3. مناسب جدًا لحجم بيانات تطبيق عقود تأجير (مئات/آلاف السجلات).
+  # 4. يدعم تخزين الكائنات المعقدة (Contract) مباشرة دون الحاجة لـ ORM ثقيل مثل SQLite.
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # --- التعامل مع الملفات والصور ---
+  path_provider: ^2.1.3   # للحصول على مسار التخزين الداخلي للتطبيق لحفظ الصور
+  image_picker: ^1.1.2    # لالتقاط/اختيار صور الهوية ورخصة القيادة
+  path: ^1.9.0            # للتعامل مع مسارات الملفات
+
+  # --- الواجهة والتنسيق ---
+  intl: ^0.20.2                # لتنسيق التواريخ باللغة العربية
+  # ملاحظة: تم استبدال google_fonts بخط Cairo مرفق محليًا (assets/fonts)
+  # لأن google_fonts يحاول تحميل الخط من الإنترنت عند أول استخدام، وهذا
+  # يتعارض مع متطلب أن يعمل التطبيق بالكامل بدون إنترنت.
+  flutter_screenutil: ^5.9.3   # (اختياري) لتحسين التجاوب على شاشات إضافية عند الحاجة مستقبلًا
+  photo_view: ^0.15.0          # لعرض الصور بالحجم الكامل (Zoom/Pan)
+
+  # --- أدوات مساعدة ---
+  uuid: ^4.4.0                 # لإنشاء معرّف فريد لكل عقد
+  cupertino_icons: ^1.0.8
+  crypto: ^3.0.3               # لتشفير (Hash) كلمات مرور المستخدمين محليًا
+
+  # --- تصدير PDF وطباعة ---
+  pdf: ^3.11.1                  # بناء ملف PDF لعقد التأجير (نص عربي + صور)
+  printing: ^5.13.3              # معاينة/طباعة/مشاركة ملف الـ PDF الناتج
+
+  # --- التوقيع الإلكتروني ---
+  signature: ^5.5.0             # لوحة توقيع إلكتروني لالتقاط توقيع المستأجر
+
+  # --- الإشعارات المحلية ---
+  flutter_local_notifications: ^17.2.2  # تنبيه قبل موعد التسليم بيوم (بدون إنترنت)
+  timezone: ^0.9.4                        # لجدولة الإشعارات بالتوقيت المحلي الصحيح
+
+  # --- النسخ الاحتياطي (تصدير/استيراد) ---
+  share_plus: ^12.0.2            # مشاركة/حفظ ملف النسخة الاحتياطية أو PDF العقد
+  file_picker: ^8.0.6           # اختيار ملف النسخة الاحتياطية عند الاستيراد
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/logo/logo.png
+    - assets/images/
+    - assets/fonts/Cairo-Regular.ttf
+
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Regular.ttf
